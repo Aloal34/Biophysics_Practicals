@@ -1,0 +1,222 @@
+EXERCISES 1–8: EXAMPLES OF USE
+================================
+
+These examples use mostly 1UBQ.pdb, which is the local PDB file used for the examples below (Ex 6 uses 1XDA).
+Outputs from exercises that can produce many lines are shortened with "...".
+
+1. EX1 — CA ATOM CONTACTS
+--------------------------
+Command:
+    python3 ex1.py 1UBQ.pdb 4
+
+Meaning:
+    Find pairs of CA atoms whose distance is <= 4 Å.
+
+Example output:
+    Ex 1. CA contacts
+
+	Contact: 1
+	at1: <Atom CA>, 2, MET
+	at2: <Atom CA>, 10, GLN
+
+       ...
+
+    The complete search with a 4 Å cutoff gives 76 CA-CA contacts in this
+    structure.
+
+
+2. EX2 — ATOMS OF A SPECIFIC RESIDUE
+------------------------------------
+Command:
+    python3 ex2.py 1UBQ.pdb A 20
+
+Meaning:
+    Select residue 20 from chain A and print its atoms and coordinates.
+
+Example output:
+    Ex 2. Atoms of residue
+    -----------------------------------------------------------------
+	Residue: SER, 20
+	Atoms:
+	SER (' ', 20, ' ') N [27.361 17.959  8.559]
+	SER (' ', 20, ' ') CA [28.054 16.835  9.21 ]
+	SER (' ', 20, ' ') C [29.258 17.318  9.984]
+	SER (' ', 20, ' ') O [29.93  16.477 10.606]
+	SER (' ', 20, ' ') CB [28.523 15.82   8.182]
+	SER (' ', 20, ' ') OG [28.946 16.445  6.967]
+
+
+3. EX3 — POSSIBLE HYDROGEN-BOND CONTACTS
+-----------------------------------------
+Command:
+    python3 ex3.py 1UBQ.pdb --distance 2.8
+
+Meaning:
+    Find pairs of N, O or S atoms separated by <= 2.8 Å.
+    The exercise uses this as a simplified definition of possible
+    hydrogen-bond contacts.
+
+Example output:
+    Ex 3. Possible hydrogen bonds
+    ---------------------------------------------------------------------------
+	<Atom O> <Atom O>
+	<Atom O> <Atom N>
+	<Atom O> <Atom O>
+	<Atom O> <Atom N>
+	<Atom N> <Atom O>
+	<Atom O> <Atom N>
+	<Atom O> <Atom O>
+	<Atom O> <Atom O>
+	<Atom O> <Atom N>
+	<Atom N> <Atom N>
+	<Atom N> <Atom N>
+	<Atom O> <Atom N>
+	<Atom O> <Atom N>
+	<Atom O> <Atom N>
+	<Atom O> <Atom N>
+	<Atom N> <Atom O>
+	<Atom N> <Atom O>
+	<Atom N> <Atom O>
+
+		...
+
+    The output is sorted by residue.
+
+4. EX4 — CA ATOMS OF A RESIDUE TYPE
+-----------------------------------
+Command:
+    python3 ex4.py 1UBQ.pdb G
+
+Meaning:
+    Select all glycine residues and print their CA atoms and coordinates.
+    G is converted to the three-letter code GLY.
+
+Example output:
+    Ex 4. CA atoms of residue type
+    ----------------------------------------------------------------------
+    Residue type: GLY
+
+    Residue  Number   Atom          X          Y          Z
+    -------------------------------------------------------
+    GLY           10     CA      20.371     18.003      8.693
+    GLY           35     CA       ...
+    GLY           47     CA       ...
+    ...
+
+    The same exercise can be run with:
+    python3 ex4.py 1UBQ.pdb GLY
+
+
+5. EX5 — PEPTIDE-BOND CONNECTIVITY
+-----------------------------------
+Command:
+    python3 ex5.py 1UBQ.pdb
+
+Meaning:
+    Find C-N pairs from different residues within the default 2.5 Å cutoff.
+
+Example output:
+    Ex 5. Peptide-bond connectivity
+    -----------------------------------------------------------------
+       1. MET    1 C -- GLN    2 N     1.30 Å
+       2. GLN    2 C -- ILE    3 N     1.32 Å
+       3. ILE    3 C -- PHE    4 N     1.31 Å
+       4. PHE    4 C -- VAL    5 N     1.33 Å
+       5. VAL    5 C -- LYS    6 N     1.29 Å
+       ...
+
+    These short C-N distances correspond to the ordinary peptide-bond
+    connections between successive residues.
+
+
+6. EX6 — DISULFIDE BONDS
+------------------------
+Command:
+    python3 ex6.py 1UBQ.pdb
+
+Meaning:
+    Select SG atoms belonging to CYS residues and search for nearby
+    SG-SG pairs.
+
+Example output for 1UBQ:
+    Number of CYS SG atoms: 0
+
+    Ex 6. Disulfide bonds
+    -------------------------------------------------------
+
+    There are no CYS SG atoms in this structure, so no disulfide
+    bonds are reported. However, if we use another structure such as 1XDA (human insulin), we can obtain something like this:
+
+    Number of SG atoms: 24
+	CYS 7 - CYS 7
+	CYS 7 - CYS 7
+	CYS 20 - CYS 19
+	CYS 20 - CYS 19
+	CYS 6 - CYS 11
+	CYS 6 - CYS 11
+	CYS 6 - CYS 11
+	CYS 20 - CYS 19
+	CYS 6 - CYS 11
+	CYS 7 - CYS 7
+	CYS 20 - CYS 19
+	CYS 7 - CYS 7
+
+
+
+7. EX7 — ALL ATOM-ATOM DISTANCES BETWEEN TWO RESIDUES
+------------------------------------------------------
+Command:
+    python3 ex7.py 1UBQ.pdb A 10 A 20
+
+Meaning:
+    Compare every atom in residue 10 of chain A with every atom in
+    residue 20 of chain A.
+
+Example output:
+    Residue 10 is GLY
+    Residue 20 is SER
+
+    Atom1 Atom2 dist1 dist2
+    -------------------------
+    N      N          26.841   26.841
+    N      CA         27.706   27.706
+    N      C          27.012   27.012
+    N      O          27.704   27.704
+    N      CB         28.923   28.923
+    N      OG         28.662   28.662
+    CA     N          26.760   26.760
+    CA     CA         27.686   27.686
+    ...
+
+    The two distance columns should agree: one is calculated using
+    Bio.PDB atom subtraction and the other using the coordinates
+    and the Euclidean-distance formula.
+
+
+8. EX8 — PDB IMPORT/DOWNLOAD MODULE
+-----------------------------------
+Ex8 is a module rather than a standalone exercise.
+
+It can be used by the other scripts through:
+    from pdb_id_imports import get_structure
+
+Example with a local file:
+    python3 ex1.py 1UBQ.pdb 4
+
+Example with a PDB ID:
+    python3 ex1.py 1UBQ 4
+
+If 1UBQ.pdb is not present locally, the importer downloads the
+PDB file and then loads it with Bio.PDB.
+
+
+GENERAL NOTES
+-------------
+- The scripts use argparse so the important input values are supplied
+  from the command line instead of being hard-coded.
+- NeighborSearch is used for distance-based searches.
+- Results are collected and sorted before printing where an ordering
+  is useful.
+- Distances are printed in Å (Angstroms).
+- Output shown above is representative/shortened where an exercise
+  produces many results.
